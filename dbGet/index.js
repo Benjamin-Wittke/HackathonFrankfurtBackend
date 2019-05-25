@@ -3,16 +3,30 @@ const MongoClient = require('mongodb').MongoClient;
 
 
 module.exports = async function (context, req) {
-    const url = "mongodb://hackathonfrankfurtbb:sPwLyMSDDSPdwIAzI8hsNQkW6iWVJUrJVAB5fJOV1Z4KB6WP2OTJHNglqxpJU3r8IRptGU8aWIJr89hEa7QVYQ==@hackathonfrankfurtbb.documents.azure.com:10255/?ssl=true";
+        const url = process.env['CUSTOMCONNSTR_MONGODB'];
     const dbName = "hackathonfrankfurtbb";
+    console.log("Query"+ req.query.name)
+    var bodyObject;
+
 
     const connectedClient = await MongoClient.connect(url, {useNewUrlParser: true}, (err, db) => {
-        console.log("Hier in der DB" + db.db(dbName).collection('users').findOne());
-        })
+        db.db(dbName).collection('users').findOne({}, (err, doc) => {
+            console.log("Hier sollten wir das Dokument haben!" + doc.name)
 
-    context.res = {
-        body: "Hallo hier"
+            $bodyObject = doc.name;
+
+        context.res = {
+        status: 400,
+        body: "Test " +  bodyObject
     }
     context.done;
+
+    });
+        })
+//outside of DB Connect, inside Function
+
+
+    //fehler, habe doc.name noch nicht außerhalb meiner Function
+
 
 };

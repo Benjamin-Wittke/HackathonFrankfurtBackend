@@ -5,10 +5,7 @@ module.exports = async function (context, req) {
     const url = process.env['CUSTOMCONNSTR_MONGODB'];
     const dbName = "hackathonfrankfurtbb";
 
-
-
-    console.log("Body" + req.body)
-
+    var obj = req.query.
     MongoClient.connect(url,{useNewUrlParser: true}, function(err, db) {
         if (err) throw err;
         var dbo = db.db(dbName);
